@@ -2,8 +2,6 @@
 #将驱动放到python安装目录下的srict目录下，并且复制一份到谷歌浏览器的安装目录下
 #亦可以使用火狐浏览器，但也要下载相应版本的驱动，如上
 #学号 密码 为必填项目
-#如果害怕脚本在服务器上没有执行可以设置一个邮箱提醒
-#有服务器的朋友可以把程序仍服务器上运行，用crontab模块设置定时任务，解放双手，没有服务器的话用自己电脑添加一个定时运行程序，
 import time
 from selenium import webdriver
 import random
@@ -11,9 +9,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 uname = '*******'  #####设置学号
-passwd = '123456'    #####设置密码
-Temperature = ['36.8', '37', '36.6', '36.5', '36.9'] #####设置温度（利用列表，利用随机数索引传入保证每天的温度不一样，避免辅导员约茶）
-a = random.randint(0, 4)#与温度列表的个数相对应
+passwd = '********'    #####设置密码
+Temperature = ['36.8', '37', '36.6', '36.5', '36.9', '36.6'] #####设置温度（利用列表，利用随机数索引传入保证每天的温度不一样，避免辅导员约茶）
+a = random.randint(0, 5)#与温度列表的个数相对应
 print(a)
 
 
@@ -28,7 +26,7 @@ def emailtx(temperature, state):
     message = MIMEText(mail_msg, 'html', 'utf-8')
 
     # 发件人名字，可以自由填写
-    message['From'] = Header('你的邮箱小助手吖', 'utf-8')
+    message['From'] = Header('坏狗邮箱小助手', 'utf-8')
     # 收件人名字 ，可以自由填写
     message['To'] = Header('坏狗i', 'utf-8')
 
@@ -39,11 +37,11 @@ def emailtx(temperature, state):
     # 发送方地址
     sender = '********@qq.com'
     # 接收方地址，可以是多个地址
-    receivers = ['********@qq.com']
+    receivers = ['2*********@qq.com']
 
     # 使用qq邮箱的服务，发送邮件
     smtpObj = smtplib.SMTP_SSL("smtp.qq.com", 465)
-    smtpObj.login(sender, 'sbpti**********')  # 登录 地址 授权码 ：授权码是发送方开启pop3 服务，在邮箱的设置中可以找到，开启后生成授权码
+    smtpObj.login(sender, '********')  # 登录 地址 授权码 ：授权码是发送方开启pop3 服务，在邮箱的设置中可以找到，开启后生成授权码
     smtpObj.sendmail(sender, receivers, message.as_string())  # 发送
     smtpObj.quit()  # 关闭
     print('邮件发送成功')
@@ -81,6 +79,7 @@ def jitb(uname, passwd, Temperature):
         time.sleep(2)
     except:
         state = '重复填报，请你明天再来'
+        temperature = '(二次填报值不给予显示)'
         emailtx(temperature, state)
         print('已经填报过了，请明天再来')
     brower.quit()    #关闭浏览器
